@@ -1,1 +1,35 @@
+import subprocess
+
+def run_nikto(url, output_file, username=None, password=None):
+    nikto_command = f"nikto -h {url} -o {output_file}"
+
+    if username and password:
+        nikto_command += f" -id {username}:{password}"
+
+    subprocess.run(nikto_command, shell=True)
+
+def main():
+    # Get the target URL from the user
+    target_url = input("Enter the target URL: ")
+
+    # Get authentication credentials if needed
+    use_authentication = input("Does the website require authentication? (y/n): ").lower()
+    username = None
+    password = None
+
+    if use_authentication == 'y':
+        username = input("Enter the username: ")
+        password = input("Enter the password: ")
+
+    # Specify the output file
+    output_file = "nikto_scan.txt"
+
+    # Run Nikto
+    print(f"\nRunning Nikto scan on {target_url}...\n")
+    run_nikto(target_url, output_file, username, password)
+
+    print(f"\nNikto scan completed. Results saved to {output_file}")
+
+if __name__ == "__main__":
+    main()
 
